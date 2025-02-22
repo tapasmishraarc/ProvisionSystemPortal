@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "UGXtlOGUIQrmTtGkfp4zQsv8eJQ+xwVvBHzxJyxMYfQ=",
+  "Source": "SystemProvisioningPortal",
+  "BasePath": "_content/SystemProvisioningPortal",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

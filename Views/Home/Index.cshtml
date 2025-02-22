@@ -1,0 +1,123 @@
+@{
+    var systems = (List<SystemProvisioningPortal.Models.System>)ViewBag.Systems;
+    var versions = (List<SystemProvisioningPortal.Models.SystemVersion>)ViewBag.Versions;
+}
+
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <form id="provisioningForm" class="bg-white shadow rounded-lg p-6">
+        <div id="errorMessage" class="hidden mb-4 p-4 text-red-700 bg-red-100 rounded-md border border-red-300"></div>
+        
+        <div class="space-y-6">
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Select Systems</h2>
+                <p class="text-sm text-gray-600 mb-2">Choose one or more systems:</p>
+                <select id="systems" name="systems" multiple class="w-full">
+                    @foreach (var system in systems)
+                    {
+                        <option value="@system.Id">@system.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Select Version</h2>
+                <p class="text-sm text-gray-600 mb-2">Choose a version:</p>
+                <select id="version" name="version" class="w-full">
+                    <option value="">Select a version</option>
+                    @foreach (var version in versions)
+                    {
+                        <option value="@version.Version">@version.Version</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Action</h2>
+                <div class="flex space-x-4">
+                    <label class="flex items-center">
+                        <input type="radio" name="action" value="provision" checked class="mr-2">
+                        Provision
+                    </label>
+                    <label class="flex items-center">
+                        <input type="radio" name="action" value="deprovision" class="mr-2">
+                        Deprovision
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" id="submitButton" class="w-full py-2 px-4 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#systems').select2({
+                placeholder: 'Select systems',
+                width: '100%'
+            });
+
+            $('#version').select2({
+                placeholder: 'Select a version',
+                width: '100%'
+            });
+
+            $('#provisioningForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                const systems = $('#systems').val();
+                const version = $('#version').val();
+                const action = $('input[name="action"]:checked').val();
+
+                if (!systems?.length || !version) {
+                    $('#errorMessage')
+                        .text('Please select both systems and version')
+                        .removeClass('hidden');
+                    return;
+                }
+
+                $('#errorMessage').addClass('hidden');
+                $('#submitButton')
+                    .prop('disabled', true)
+                    .text('Processing...')
+                    .addClass('bg-gray-400')
+                    .removeClass('bg-blue-600 hover:bg-blue-700');
+
+                $.ajax({
+                    url: '@Url.Action("Provision", "Home")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        systems: systems,
+                        version: version,
+                        action: action
+                    }),
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                        } else {
+                            $('#errorMessage')
+                                .text(response.message)
+                                .removeClass('hidden');
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#errorMessage')
+                            .text('An error occurred while processing your request')
+                            .removeClass('hidden');
+                    },
+                    complete: function() {
+                        $('#submitButton')
+                            .prop('disabled', false)
+                            .text('Submit')
+                            .removeClass('bg-gray-400')
+                            .addClass('bg-blue-600 hover:bg-blue-700');
+                    }
+                });
+            });
+        });
+    </script>
+}

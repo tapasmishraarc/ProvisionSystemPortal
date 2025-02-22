@@ -1,0 +1,7 @@
+C:\Users\devop\Downloads\ProvisionSystemPortal\ProvisionSystemPortal\obj\Debug\net6.0\SystemProvisioningPortal.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\devop\Downloads\ProvisionSystemPortal\ProvisionSystemPortal\obj\Debug\net6.0\SystemProvisioningPortal.AssemblyInfoInputs.cache
+C:\Users\devop\Downloads\ProvisionSystemPortal\ProvisionSystemPortal\obj\Debug\net6.0\SystemProvisioningPortal.AssemblyInfo.cs
+C:\Users\devop\Downloads\ProvisionSystemPortal\ProvisionSystemPortal\obj\Debug\net6.0\SystemProvisioningPortal.csproj.CoreCompileInputs.cache
+C:\Users\devop\Downloads\ProvisionSystemPortal\ProvisionSystemPortal\obj\Debug\net6.0\SystemProvisioningPortal.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\devop\Downloads\ProvisionSystemPortal\ProvisionSystemPortal\obj\Debug\net6.0\SystemProvisioningPortal.RazorAssemblyInfo.cache
+C:\Users\devop\Downloads\ProvisionSystemPortal\ProvisionSystemPortal\obj\Debug\net6.0\SystemProvisioningPortal.RazorAssemblyInfo.cs
