@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: system-provisioning-portal
+  labels:
+    app: system-provisioning-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: system-provisioning-portal
+  template:
+    metadata:
+      labels:
+        app: system-provisioning-portal
+    spec:
+      containers:
+      - name: system-provisioning-portal
+        image: system-provisioning-portal:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: AZURE_DEVOPS_API_URL
+          valueFrom:
+            secretKeyRef:
+              name: azure-devops-secrets
+              key: AZURE_DEVOPS_API_URL
+        - name: AZURE_DEVOPS_PAT
+          valueFrom:
+            secretKeyRef:
+              name: azure-devops-secrets
+              key: AZURE_DEVOPS_PAT
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
