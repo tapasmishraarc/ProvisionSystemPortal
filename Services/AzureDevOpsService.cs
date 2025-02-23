@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 using SystemProvisioningPortal.Models;
 
 namespace SystemProvisioningPortal.Services;
@@ -7,17 +8,20 @@ namespace SystemProvisioningPortal.Services;
 public class AzureDevOpsService : IAzureDevOpsService
 {
     private readonly HttpClient _httpClient;
-    private readonly IConfiguration _configuration;
+    private readonly AzureDevOpsSettings _settings;
 
-    public AzureDevOpsService(HttpClient httpClient, IConfiguration configuration)
+    public AzureDevOpsService(
+        HttpClient httpClient,
+        IOptions<AzureDevOpsSettings> settings)
     {
         _httpClient = httpClient;
-        _configuration = configuration;
+        _settings = settings.Value;
 
-        var pat = _configuration["AzureDevOps:PersonalAccessToken"];
-        var auth = Convert.ToBase64String(Encoding.ASCII.GetBytes($":{pat}"));
-        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", auth);
-        _httpClient.BaseAddress = new Uri(_configuration["AzureDevOps:ApiUrl"] ?? throw new InvalidOperationException("Azure DevOps API URL not configured"));
+        var auth = Convert.ToBase64String(
+            Encoding.ASCII.GetBytes($":{_settings.PersonalAccessToken}"));
+        _httpClient.DefaultRequestHeaders.Authorization = 
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", auth);
+        _httpClient.BaseAddress = new Uri(_settings.ApiUrl);
     }
 
     public async Task<object> TriggerProvisioningPipelineAsync(ProvisioningRequest request)
